@@ -18,12 +18,11 @@ use App\Http\Controllers\OrganizationController;
 
 
 route::get("/", function(){
-    return response()->json(['message'=>"welcome"]);
+    return response()->json(['message'=>"welcome to vms by laravel"]);
 });
-// route::post('/login', [LoginController::class, 'login']);
-route::post('/login', [LoginController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
@@ -34,25 +33,28 @@ Create Organization api
 --------------------------------------------*/
 route::post('/create/organization', [OrganizationController::class, 'create_organization']);
 
+route::post('/login', [LoginController::class, 'login']);
+
+route::get("/all/organizations", [OrganizationController::class, 'get_organization']);
 
 /*------------------------------------------
 --------------------------------------------
 All Normal Users Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware([ 'user-access:user'])->group(function () {
+// Route::middleware([ 'user-access:user'])->group(function () {
   
-    Route::get('/home', function(){
-        return response()->json(['message'=>"user"]);
-    })->name('home');
-});
+//     Route::get('/home', function(){
+//         return response()->json(['message'=>"user"]);
+//     })->name('home');
+// });
   
 /*------------------------------------------
 --------------------------------------------
 All Admin Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:admin'])->group(function () {
+Route::middleware(['auth:api', 'user-access:admin'])->group(function () {
   
     Route::get('/admin/home',function(){
         return response()->json(['message'=>"Admin"]);
@@ -64,11 +66,11 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
 All Manager Routes List
 --------------------------------------------
 --------------------------------------------*/
-Route::middleware(['auth', 'user-access:manager'])->group(function () {
+// Route::middleware(['auth', 'user-access:manager'])->group(function () {
   
-    Route::get('/manager/home',function(){
-        return response()->json(['message'=>"manager"]);
-    })->name('manager.home');
-});
+//     Route::get('/manager/home',function(){
+//         return response()->json(['message'=>"manager"]);
+//     })->name('manager.home');
+// });
 
 

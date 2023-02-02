@@ -17,35 +17,46 @@ class OrganizationController extends Controller
         $input = $request->all();
         $admin_input = $input['administrator'];
         $organization_input = $input['organization'];
-        
-        
-        $obj_merged = array_merge((array) $admin_input, (array) $organization_input);
+    
      
-        $rules = [
+        $rules_admin_input = [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'phone' => 'required',
-            'password' => 'required',
-            'company_name' => 'required',
-            'type' => 'required',
-            'founder' => 'required',
+            'password' => 'required'
         ];
         
 
-        $customMessage = [
+        $customMessage_admin_input = [
             'name.required' =>'Name is required',
             'phone.required' =>'Email is required',
             'email.required' =>'Email is required',
             'email.email'=> 'Email must be a valid email',
-            'email.unique'=> 'Email must be a unique email',
+            'email.unique'=> 'Email must be a unique email',          
             'password.required' => 'Password is required'
         ];
-        $validator = Validator::make($obj_merged, $rules, $customMessage);
+        $validator = Validator::make($admin_input, $rules_admin_input, $customMessage_admin_input);
         if($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        try {
+        $rules_organization_input =[
+            'name' => 'required|unique:organizations',
+            'type' => 'required',
+            'founder' => 'required',
+        ];
+        $customMessage_organization_input=[
+            'name.required' =>'Name is required',
+        ];
+
+        
+
+        $validator1 = Validator::make($organization_input,$rules_organization_input,$customMessage_organization_input);
+
+        if($validator1->fails()) {
+            return response()->json($validator1->errors(), 422);
+        }
+
             $user = new User();
             $user ->name = $admin_input['name'];
             $user ->email = $admin_input['email'];
@@ -56,7 +67,7 @@ class OrganizationController extends Controller
 
             $organization = new Organization();
 
-            $organization-> name= $organization_input['company_name'];
+            $organization-> name= $organization_input['name'];
             $organization-> type= $organization_input['type'];
             $organization-> founder= $organization_input['founder'];
             $organization-> user_id= $user['id'];
@@ -71,16 +82,18 @@ class OrganizationController extends Controller
                     'organization'=>$organization
                  ],
                 ], 201);
+    }
 
-        } catch (\Throwable $th) {
-            //throw $th;
-            return response()->json($th, 422);
-        }
+    public function get_organization(Request $request){
 
-       
+        $organization = Organization::get();
 
-
-
-        return response()->json(['message'=>"create organization"]);
+        return response()->json([
+            'type'=>"Success",
+            'message'=>"Get All Organization Successfully",
+             'data'=>[
+                'organization'=>$organization
+             ],
+            ], 201);
     }
 }

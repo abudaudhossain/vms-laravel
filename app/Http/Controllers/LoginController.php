@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\User;
 use  Validator;
    
 
@@ -38,14 +39,19 @@ class LoginController extends Controller
       
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {
-            if (auth()->user()->type == 'admin') {
-                return response()->json(['message'=>"This is Admin"]);
-            }else if (auth()->user()->type == 'manager') {
-                return response()->json(['message'=>"This is manager"]);
-            }else{
-                return response()->json(['message'=>"user"]);
-            }
+            $user = User::where('email', $input['email'])->first();
+            $access_token = $user->createToken($input['email'])->accessToken;
+          
+            User::where('email', $input['email'])->update(['access_token' => $access_token]);
+        
             
+            return response()->json([
+                'type'=>"Success",
+                'message'=>"User Login Successfully",
+                 'data'=>[
+                    'access_token' => $access_token
+                 ],
+                ], 200);
 
         }else{
              return response()->json(['message'=>"password or email invalided"]);
