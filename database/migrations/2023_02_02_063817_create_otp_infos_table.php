@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('otp');
             $table->boolean('otp_validation');
-            $table->date('OTPExpireAt');
+            $table->datetime('OTPExpireAt');
             $table->timestamps();
         });
     }

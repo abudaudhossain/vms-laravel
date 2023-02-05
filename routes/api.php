@@ -39,9 +39,11 @@ route::get("/all/organizations", [OrganizationController::class, 'get_organizati
 
 /*------------------------------------------
 --------------------------------------------
-All Normal Users Routes List
+All Visitor Routes List
 --------------------------------------------
 --------------------------------------------*/
+route::post("/get-otp", [LoginController::class, 'getOTP']);
+
 // Route::middleware([ 'user-access:user'])->group(function () {
   
 //     Route::get('/home', function(){
