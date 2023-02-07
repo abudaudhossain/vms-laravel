@@ -15,6 +15,15 @@ return new class extends Migration
     {
         Schema::create('visitors', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
+            $table->string('phone')->unique();
+            $table->string('email')->unique()->nullable();
+            $table->string('designation')->nullable();
+            $table->string('image')->nullable();
+            $table->string('access_token')->nullable();
+            $table->string('logAt');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }

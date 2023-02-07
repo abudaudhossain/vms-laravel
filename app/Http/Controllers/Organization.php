@@ -48,21 +48,24 @@ class OrganizationCon extends Controller
         }
 
         try {
+            $organization = new Organization();
+            $organization-> name= $organization_input['company_name'];
+            $organization-> type= $organization_input['type'];
+            $organization-> founder= $organization_input['founder'];
+     
+            $organization->save();
+            dd($organization);
+
             $user = new User();
             $user ->name = $admin_input['name'];
             $user ->email = $admin_input['email'];
             $user ->password =Hash::make($admin_input['password']);
             $user ->type = 1;
             $user ->phone = $admin_input['phone'];
+            $user ->organization_id = $organization['id'];
             $user->save();
 
-            $organization = new Organization();
-
-            $organization-> name= $organization_input['company_name'];
-            $organization-> type= $organization_input['type'];
-            $organization-> founder= $organization_input['founder'];
-     
-            $organization->save();
+           
 
             return response()->json([
                 'type'=>"Success",

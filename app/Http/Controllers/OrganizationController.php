@@ -57,22 +57,25 @@ class OrganizationController extends Controller
             return response()->json($validator1->errors(), 422);
         }
 
-            $user = new User();
-            $user ->name = $admin_input['name'];
-            $user ->email = $admin_input['email'];
-            $user ->password =Hash::make($admin_input['password']);
-            $user ->type = 1;
-            $user ->phone = $admin_input['phone'];
-            $user->save();
+           
 
             $organization = new Organization();
 
             $organization-> name= $organization_input['name'];
             $organization-> type= $organization_input['type'];
             $organization-> founder= $organization_input['founder'];
-            $organization-> user_id= $user['id'];
+           
      
             $organization->save();
+
+            $user = new User();
+            $user ->name = $admin_input['name'];
+            $user ->email = $admin_input['email'];
+            $user ->password =Hash::make($admin_input['password']);
+            $user ->type = 1;
+            $user ->phone = $admin_input['phone'];
+            $user-> organization_id= $organization['id'];
+            $user->save();
 
             return response()->json([
                 'type'=>"Success",

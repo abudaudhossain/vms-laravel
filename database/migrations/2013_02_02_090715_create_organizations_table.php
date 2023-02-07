@@ -18,9 +18,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('type');
             $table->string('founder');
-            $table->string('description');
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('description')->nullable();
             $table->string('status')->default("active");
             $table->timestamps();
         });
