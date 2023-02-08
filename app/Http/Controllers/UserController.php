@@ -45,12 +45,27 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function get_all_employees(Request $request){
+    public function get_all_employees(){
        // code
+       $users = User::where('organization_id', auth()->user()['organization_id'])->get();
+       
        return response()->json([
         'type'=>"Success",
-        'message'=>"Create New Employee Successfully",
-        'employee' => "user",
-    ], 200); 
+        'message'=>"Get All Employees Successfully",
+        'employee' => $users,
+        ], 200); 
+    }
+
+    public function get_employee_by_id($id){
+
+       $user = User::where('organization_id', auth()->user()['organization_id'])->where('id', $id)->get();
+
+       return response()->json([
+        'type'=>"Success",
+        'message'=>"Get All Employees Successfully",
+        'employee' => $user,
+        ], 200); 
+
+
     }
 }

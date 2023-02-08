@@ -69,6 +69,7 @@ Route::middleware(['auth:api', 'user-access:admin'])->group(function () {
 
     Route::post("/admin/create/new/employee", [UserController::class, 'create_employee']);
     Route::get("/all/employees", [UserController::class, 'get_all_employees']);
+    Route::get("/employee/{id}", [UserController::class, 'get_employee_by_id']);
 });
   
 /*------------------------------------------
