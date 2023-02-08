@@ -17,7 +17,7 @@ class UserController extends Controller
         $rules = [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'phone' => 'required',
+            'phone' => 'required|unique:users',
             'password' => 'required',
         ];
         $customMessage = [
@@ -67,5 +67,43 @@ class UserController extends Controller
         ], 200); 
 
 
+    }
+
+    public function update_employee_by_id(Request $request,$id){
+       // code
+        $input = $request->all();
+        $validator =  $this->is_exists_key($input);
+
+        if($validator){
+            $message = 'Cant not update '.$validator.' properties';
+            return response()->json([
+            'type'=>'Error',
+            'message'=>$message,
+            'data' => [],
+            ], 422); 
+        }
+
+        $update_key = array_keys($input);
+
+        $user = User::where('id', $id)->update($input);
+
+        return response()->json([
+           'type'=>'Success',
+           'message'=>'Employee Update Successfully',
+           'count' => $user,
+        ], 200); 
+        
+    }
+
+    protected function is_exists_key($update_array){
+        $unchange_fields = array("id","password","organization_id", "access_token", "email_verified_at", "remember_token","email");
+
+        foreach ($unchange_fields as $value) {
+            // dd( $update_array);
+            if(array_key_exists($value, $update_array)){
+                return $value;
+            }
+        }
+        return false;
     }
 }
