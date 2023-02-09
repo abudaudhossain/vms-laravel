@@ -194,6 +194,7 @@ class LoginController extends Controller
                     //  create new visitor and add access token
                     $new_visitor = new Visitor();                  
                     $new_visitor ->phone = $input['phone'];
+                    $new_visitor ->logAt = $date;
                     $new_visitor ->save();
                     $access_token = $new_visitor->createToken($input['phone'])->accessToken;    
                     Visitor::where('phone', $input['phone'])->update(['access_token' => $access_token]);

@@ -12,4 +12,10 @@ class Visitor extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $hidden = [
+        'email_verified_at',
+        'remember_token',
+        'access_token'
+    ];
+
 }

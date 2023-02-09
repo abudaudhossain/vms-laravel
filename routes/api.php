@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MeetingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +27,6 @@ route::get("/", function(){
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('auth:api-visitor')->get('/visitor', function (Request $request) {
-    return $request->user();
-});
-
 /*------------------------------------------
 --------------------------------------------
 Create Organization api
@@ -49,12 +46,13 @@ All Visitor Routes List
 route::post("/get-otp", [LoginController::class, 'getOTP']);
 route::post('/otp-validation', [LoginController::class, 'OTPValidation']);
 
-// Route::middleware([ 'user-access:user'])->group(function () {
+Route::middleware('auth:api-visitor')->group(function () {
   
-//     Route::get('/home', function(){
-//         return response()->json(['message'=>"user"]);
-//     })->name('home');
-// });
+    Route::get('/visitor', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('/visitor/request/meeting', [MeetingController::class, 'meeting_request']);
+});
   
 /*------------------------------------------
 --------------------------------------------

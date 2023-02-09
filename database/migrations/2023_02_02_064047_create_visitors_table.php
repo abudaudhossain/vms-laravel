@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('designation')->nullable();
             $table->string('image')->nullable();
             $table->string('access_token')->nullable();
-            $table->string('logAt');
+            $table->timestamp('logAt');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken()->nullable();
             $table->timestamps();
